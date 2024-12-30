@@ -2,9 +2,7 @@ import express, { json, urlencoded } from "express";
 
 import authRouter from "./routes/auth/index.js";
 
-import candidateRouter from "./routes/candidate/index.js";
-import partnerRouter from "./routes/partner/index.js";
-import countryRouter from "./routes/country/index.js";
+import uploadRouter from "./routes/upload/index.js";
 import verifyRouter from "./routes/verify/index.js";
 
 import cors from "cors";
@@ -52,9 +50,8 @@ app.get("/", (req, res) => {
 });
 
 app.use("/auth", authRouter);
-app.use("/candidate", candidateRouter);
-app.use("/partner", partnerRouter);
-app.use("/country", countryRouter);
+app.use("/upload", uploadRouter);
+
 app.use("/verify", verifyRouter);
 if (process.env.NODE_ENV === "dev") {
   app.listen(port, () => {
