@@ -2,19 +2,18 @@ import express, { json, urlencoded } from "express";
 
 import authRouter from "./routes/auth/index.js";
 
-import candidateRouter from "./routes/candidate/index.js";
-import partnerRouter from "./routes/partner/index.js";
-import countryRouter from "./routes/country/index.js";
 import verifyRouter from "./routes/verify/index.js";
-
+import uploadRouter from "./routes/upload/index.js";
 import cors from "cors";
 import serverless from "serverless-http";
 import cookieParser from "cookie-parser";
 import { Request, Response, NextFunction } from "express";
-import { verifyToken } from "./middlewares/authMiddlewares.js";
+
+import bodyParser from "body-parser";
 
 const port = 4000;
 const app = express();
+app.use(bodyParser.raw({ type: "multipart/form-data", limit: "10mb" }));
 app.use(cookieParser());
 app.use(urlencoded({ extended: false, limit: "50mb" }));
 app.use(json({ limit: "50mb" }));
@@ -52,9 +51,8 @@ app.get("/", (req, res) => {
 });
 
 app.use("/auth", authRouter);
-app.use("/candidate", candidateRouter);
-app.use("/partner", partnerRouter);
-app.use("/country", countryRouter);
+app.use("/upload", uploadRouter);
+
 app.use("/verify", verifyRouter);
 if (process.env.NODE_ENV === "dev") {
   app.listen(port, () => {

@@ -1,3 +1,3 @@
-import * as projectSchema from "./candidateSchema";
+import * as schema from "./schema";
 
-export default { ...projectSchema };
+export default { ...schema };
