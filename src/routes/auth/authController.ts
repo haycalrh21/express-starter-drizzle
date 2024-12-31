@@ -10,7 +10,7 @@ const generateUserToken = (user: any) => {
     { userId: user.id, role: user.role, email: user.email },
     process.env.JWT_SECRET || "", // Pastikan JWT_SECRET valid di environment
     {
-      expiresIn: "30d", // Set token expired 30 hari
+      expiresIn: "7d", // Set token expired 30 hari
     }
   );
 };
@@ -74,7 +74,6 @@ export async function loginUser(req: Request, res: Response): Promise<void> {
     delete user.password;
     // Kirimkan response sukses dengan token dan data user
     res.status(200).json({ token, user, message: "Login successful" });
-    console.log(token);
   } catch (e) {
     console.error("Error in login:", e); // Tambahkan log error
     res.status(500).json({ error: "Internal Server Error" }); // Pastikan ada response error
