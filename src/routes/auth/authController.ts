@@ -14,28 +14,6 @@ const generateUserToken = (user: any) => {
     }
   );
 };
-export async function getUserById(req: Request, res: Response) {
-  try {
-    const { id } = req.params; // Mengambil ID dari URL parameter
-    if (!id) {
-      res.status(400).json({ error: "User ID is required" });
-    }
-
-    // Logika untuk mengambil data user berdasarkan id dari database
-    const user = await db
-      .select()
-      .from(userTable)
-      .where(eq(userTable.id, parseInt(id)));
-    if (!user) {
-      res.status(404).json({ error: "User not found" });
-    }
-
-    res.json(user);
-  } catch (error) {
-    console.error("Error fetching user by ID:", error);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-}
 
 export async function loginUser(req: Request, res: Response): Promise<void> {
   try {
@@ -103,6 +81,28 @@ export async function registerUser(req: Request, res: Response) {
   }
 }
 
+export async function getUserById(req: Request, res: Response) {
+  try {
+    const { id } = req.params; // Mengambil ID dari URL parameter
+    if (!id) {
+      res.status(400).json({ error: "User ID is required" });
+    }
+
+    // Logika untuk mengambil data user berdasarkan id dari database
+    const user = await db
+      .select()
+      .from(userTable)
+      .where(eq(userTable.id, parseInt(id)));
+    if (!user) {
+      res.status(404).json({ error: "User not found" });
+    }
+
+    res.json(user);
+  } catch (error) {
+    console.error("Error fetching user by ID:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+}
 export async function getAllUsers(req: Request, res: Response) {
   try {
     const users = await db.select().from(userTable);

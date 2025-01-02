@@ -1,29 +1,34 @@
 import jwt from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
 
-export function verifyToken(
+export async function verifyToken(
   req: Request,
   res: Response,
   next: NextFunction
-): void {
-  const token = req.get("Authorization")?.split(" ")[1]; // Ambil token setelah 'Bearer'
+) {
+  const token = req.headers.authorization?.split(" ")[1]; // Ambil token dari header Authorization
 
   if (!token) {
-    res.status(401).json({ error: "Unauthorized" }); // Jangan return response di luar `next()`
+    // Mengirimkan error jika token tidak ada
+    res.status(401).json({ error: "Token missing" });
+    return; // Menghentikan eksekusi lebih lanjut setelah respons dikirim
   }
 
   try {
-    const decoded = jwt.verify(
-      token!,
-      process.env.JWT_SECRET || "default-secret"
-    );
-    if (typeof decoded !== "object" || !decoded) {
-      res.status(401).json({ error: "Unauthorized" }); // Tidak mengembalikan Response selain error
-    }
-
-    req.body.user = decoded; // Menyimpan informasi user dari token
-    next(); // Lanjutkan ke middleware atau route handler berikutnya
-  } catch (error) {
-    res.status(401).json({ error: "Invalid or expired token" }); // Tangani error dengan respons
+    // Dekode token
+    jwt.verify(token, process.env.JWT_SECRET!, (err, decoded) => {
+      if (err) {
+        // Mengirimkan error jika token tidak valid
+        res.status(403).json({ error: "Invalid token" });
+        return; // Menghentikan eksekusi lebih lanjut setelah respons dikirim
+      } else {
+        // Jika token valid, lanjutkan ke middleware berikutnya
+        next();
+      }
+    });
+  } catch (err) {
+    // Menangani error lainnya
+    res.status(403).json({ error: "Invalid token" });
+    return; // Menghentikan eksekusi lebih lanjut setelah respons dikirim
   }
 }

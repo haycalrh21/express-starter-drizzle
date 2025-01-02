@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { v2 as cloudinary } from "cloudinary";
 import { customerTable } from "../../db/customerSchema.js";
 import { db } from "../../db/index.js";
-import { desc } from "drizzle-orm/expressions.js";
+import { asc, desc } from "drizzle-orm";
 
 // Cloudinary Configuration
 cloudinary.config({

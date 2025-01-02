@@ -2,9 +2,11 @@ import express, { json, urlencoded } from "express";
 
 import authRouter from "./routes/auth/index.js";
 
-import verifyRouter from "./routes/verify/index.js";
 import uploadRouter from "./routes/upload/index.js";
 import customerRouter from "./routes/customer/index.js";
+import unitRouter from "./routes/unit/index.js";
+import unitNumberRouter from "./routes/unit/unitType/index.js";
+import unitTypeRouter from "./routes/unit/unitFloor/index.js";
 import cors from "cors";
 import serverless from "serverless-http";
 import cookieParser from "cookie-parser";
@@ -53,9 +55,11 @@ app.get("/", (req, res) => {
 
 app.use("/auth", authRouter);
 app.use("/customer", customerRouter);
+app.use("/unit", unitRouter);
+app.use("/unit/unitnumber", unitNumberRouter);
+app.use("/unit/unittype", unitTypeRouter);
 app.use("/upload", uploadRouter);
 
-app.use("/verify", verifyRouter);
 if (process.env.NODE_ENV === "dev") {
   app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);
