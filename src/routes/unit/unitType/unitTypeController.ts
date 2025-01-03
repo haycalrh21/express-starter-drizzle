@@ -78,15 +78,16 @@ export async function GetUnitNumber(
       unit_number: unit.unit_number,
     }));
 
+    // Mengirimkan array data dan pagination dalam dua array terpisah
     res.status(200).json({
-      data: mappedUnitNumber,
-      pagination: {
-        total,
-        page,
-        limit,
-        totalPages: Math.ceil(total / limit),
-        totalCountPerPage,
-      },
+      data: mappedUnitNumber, // Array data unit
+      pagination: [
+        total, // total data
+        page, // halaman saat ini
+        limit, // limit per halaman
+        Math.ceil(total / limit), // total halaman
+        totalCountPerPage, // jumlah data yang ditampilkan di halaman ini
+      ],
     });
   } catch (error) {
     console.error("Error:", error);

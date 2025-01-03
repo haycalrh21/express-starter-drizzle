@@ -17,6 +17,7 @@ export async function CreateCustomer(
 ): Promise<void> {
   const { name, email, phone, address, dateOfBirth, gender, file } = req.body;
 
+  console.log(req.body);
   if (!file || typeof file !== "string" || !file.startsWith("data:image")) {
     res.status(400).json({ error: "Invalid or missing file data" });
     return;
@@ -30,11 +31,12 @@ export async function CreateCustomer(
 
     if (!uploadResponse.secure_url) {
       res.status(500).json({ error: "Failed to upload file" });
+      console.log("Failed to upload file");
       return;
     }
 
     const fileUrl: string = uploadResponse.secure_url; // KTP URL wajib string
-
+    console.log("fileUrl", fileUrl);
     const data = {
       name,
       email,

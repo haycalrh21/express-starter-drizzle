@@ -11,7 +11,7 @@ import {
 } from "../../../db/unit/unitTypeUtilites.js";
 export async function CreateType(req: Request, res: Response): Promise<void> {
   const { type } = req.body;
-
+  console.log("Received type:", type);
   //   jika unit number sama
 
   try {
